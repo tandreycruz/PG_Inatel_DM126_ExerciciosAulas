@@ -12,40 +12,55 @@ struct ContentView: View {
     @State private var password: String = ""
     @State private var alertMessage: String = ""
     @State private var showAlert: Bool = false
+    @State private var isLoggedIn: Bool = false
     
     var body: some View {
-        VStack {
-            TextField(
-                "username", text: $username
-            ).frame(maxWidth: 150)
-                    
-            HStack {
-                SecureField(
-                    "password", text: $password
-                ).frame(maxWidth: 200)
-                .textContentType(.password)
-                        
-                Button(action: handleLogin) {
-                    Image(systemName: "greaterthan.square.fill")
-                }
-            }.frame(maxWidth: 150)
-        }.frame(maxWidth: 200)
+        NavigationStack {
+            VStack(spacing: 24) {
+                Image(systemName: "person.crop.circle.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 120, height: 120)
+                    .foregroundColor(.blue)
                 
-        .alert(alertMessage, isPresented:
-            $showAlert){
-                Button("Ok", role: .cancel){}
+                TextField("Usuário", text: $username)
+                    .textFieldStyle(.roundedBorder)
+                    .padding(.horizontal, 32)
+                
+                SecureField("Senha", text: $password)
+                    .textFieldStyle(.roundedBorder)
+                    .padding(.horizontal, 32)
+                
+                Button(action: handleLogin) {
+                    HStack {
+                        Image(systemName: "arrow.right.circle.fill")
+                        Text("Entrar").fontWeight(.semibold)
+                    }
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: 200)
+                    .background(Color.blue)
+                    .cornerRadius(12)
+                }
             }
+            .padding()
+            .alert(alertMessage, isPresented: $showAlert) {
+                Button("Ok", role: .cancel) {}
+            }
+            .navigationDestination(isPresented: $isLoggedIn) {
+                HomeView()
+            }
+        }
     }
     
     private func handleLogin(){
         if username == "Admin" && password == "123" {
-            alertMessage = "Login feito com sucesso!"
+            isLoggedIn = true
         }
         else {
             alertMessage = "Credenciais invalidas!"
-        }
-            
-        showAlert = true
+            showAlert = true
+        }        
     }}
 
 #Preview {
