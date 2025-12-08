@@ -11,11 +11,16 @@ struct ContentView: View {
     var body: some View {
         VStack {
             NavigationBar()
-            Features_Grid()
-            CarouselTabView()
-            GoalContainer()
-        }
-        .padding()
+            ScrollView(.vertical,
+                       showsIndicators: false)
+            {
+                VStack {
+                    Features_Grid()
+                    CarouselTabView()
+                    GoalContainer()
+                }
+            }
+        }        
     }
 }
 
