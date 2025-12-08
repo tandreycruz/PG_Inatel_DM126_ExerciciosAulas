@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NavigationBar: View {
     @State private var nomeAtual: String = "Taibe Cruz"
-    @State private var nomes: [String] = ["Taibe Cruz", "Jose Cruz", "Ramon Cruz"]
+    @State private var nomes: [String] = ["Taibe Cruz", "Carlitos Tevez", "Romarinho"]
     @State private var showAlert: Bool = false
     @State private var nomeNovo: String = ""
     
@@ -29,8 +29,30 @@ struct NavigationBar: View {
                     .fontWeight(.bold)
             }
             
-            Button(action: {}){
-                Image(systemName: "person.badge.plus.fill")
+            Button(action: {showAlert = true}){
+                Image(systemName: "plus.circle.fill")
+            .font(.title3)
+            .foregroundStyle(.gray)
+            }.sheet(isPresented: $showAlert){
+                VStack{
+                    Text("Adicionar novo nome").font(.headline)
+                    TextField("Digite o nome", text: $nomeNovo).textFieldStyle(RoundedBorderTextFieldStyle())
+                    HStack {
+                        Button("Cancelar") {
+                            showAlert = false
+                            nomeNovo = ""
+                        }
+                        .foregroundStyle(.red)
+                        Button("Adicionar") {
+                            if !nomeNovo.isEmpty {
+                                nomes.append(nomeNovo)
+                                nomeAtual = nomeNovo
+                                nomeNovo = ""
+                                showAlert = false
+                            }
+                        }.foregroundStyle(.blue)
+                    }
+                }.presentationDetents([.fraction(0.2)]).padding()
             }
         }
     }
