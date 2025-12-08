@@ -41,8 +41,7 @@ struct NavigationBar: View {
                         Button("Cancelar") {
                             showAlert = false
                             nomeNovo = ""
-                        }
-                        .foregroundStyle(.red)
+                        }.foregroundStyle(.red)
                         Button("Adicionar") {
                             if !nomeNovo.isEmpty {
                                 nomes.append(nomeNovo)
