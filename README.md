@@ -29,7 +29,7 @@ Contém os exercícios realizados nas aulas 3 e 4 (SwiftUI).
 - Troca de nome na tela de navegação superior (Navigation Bar).  
 - Alteração na NavigationBar para que os usuários sejam extraídos do UsersMock.
 - Adicionar novos usuários na lista de UsersMock a partir do botão ➕ da NavigationBar.  
-- Habilitar Face ID para autenticação.
+- *Habilitar Face ID para autenticação (o Face ID não funciona em simulador quando o Mac está sendo acessado remotamente).*
 <br><br>
 
 
