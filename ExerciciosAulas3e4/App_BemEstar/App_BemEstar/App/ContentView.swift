@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var userManager = UserManager()
+
     var body: some View {
         VStack {
-            NavigationBar(usuarios: mockUsers)
+            NavigationBar(userManager: userManager)
+            
             ScrollView(.vertical,
                        showsIndicators: false)
             {

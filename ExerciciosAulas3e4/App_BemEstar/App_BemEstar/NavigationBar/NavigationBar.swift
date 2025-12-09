@@ -8,18 +8,20 @@
 import SwiftUI
 
 struct NavigationBar: View {
-    let usuarios: [LoginType]
+    @ObservedObject var userManager: UserManager
     
     @State private var nomeAtual: String = ""
     @State private var nomes: [String] = []
     @State private var showAlert: Bool = false
     @State private var nomeNovo: String = ""
+    @State private var senhaNova: String = ""
     
-    init(usuarios: [LoginType]) {
-        self.usuarios = usuarios
-        _nomes = State(initialValue: usuarios.map { $0.username })
-        _nomeAtual = State(initialValue: usuarios.first?.username ?? "Usuário")
+    init(userManager: UserManager) {
+        self.userManager = userManager
+        _nomes = State(initialValue: userManager.usuarios.map { $0.username })
+        _nomeAtual = State(initialValue: userManager.usuarios.first?.username ?? "Usuário")
     }
+
     
     
     var body: some View {
@@ -44,20 +46,28 @@ struct NavigationBar: View {
             .foregroundStyle(.gray)
             }.sheet(isPresented: $showAlert){
                 VStack{
-                    Text("Adicionar novo nome").font(.headline)
+                    Text("Adicionar novo usuario").font(.headline)
                     TextField("Digite o nome", text: $nomeNovo).textFieldStyle(RoundedBorderTextFieldStyle())
+                    SecureField("Digite a senha", text: $senhaNova)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+
+                    
                     HStack {
                         Button("Cancelar") {
                             showAlert = false
                             nomeNovo = ""
+                            senhaNova = ""
                         }.foregroundStyle(.red)
                         Button("Adicionar") {
-                            if !nomeNovo.isEmpty {
+                            if !nomeNovo.isEmpty && !senhaNova.isEmpty {
+                                userManager.adicionarUsuario(nome: nomeNovo, senha: senhaNova)
                                 nomes.append(nomeNovo)
                                 nomeAtual = nomeNovo
                                 nomeNovo = ""
+                                senhaNova = ""
                                 showAlert = false
                             }
+
                         }.foregroundStyle(.blue)
                     }
                 }
@@ -69,5 +79,5 @@ struct NavigationBar: View {
 }
 
 #Preview {
-    NavigationBar(usuarios: mockUsers)
+    NavigationBar(userManager: UserManager())
 }
