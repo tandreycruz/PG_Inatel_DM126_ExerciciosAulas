@@ -8,10 +8,19 @@
 import SwiftUI
 
 struct NavigationBar: View {
-    @State private var nomeAtual: String = "Taibe Cruz"
-    @State private var nomes: [String] = ["Taibe Cruz", "Carlitos Tevez", "Romarinho"]
+    let usuarios: [LoginType]
+    
+    @State private var nomeAtual: String = ""
+    @State private var nomes: [String] = []
     @State private var showAlert: Bool = false
     @State private var nomeNovo: String = ""
+    
+    init(usuarios: [LoginType]) {
+        self.usuarios = usuarios
+        _nomes = State(initialValue: usuarios.map { $0.username })
+        _nomeAtual = State(initialValue: usuarios.first?.username ?? "Usuário")
+    }
+    
     
     var body: some View {
         HStack{
@@ -51,12 +60,14 @@ struct NavigationBar: View {
                             }
                         }.foregroundStyle(.blue)
                     }
-                }.presentationDetents([.fraction(0.2)]).padding()
+                }
+                .presentationDetents([.fraction(0.2)])
+                .padding()
             }
         }
     }
 }
 
 #Preview {
-    NavigationBar()
+    NavigationBar(usuarios: mockUsers)
 }
